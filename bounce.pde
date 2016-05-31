@@ -30,7 +30,7 @@ class ball {
 
 	void display(){
 		fill(c);
-		if (b == 1 || b == 3){
+		if (b == 1){
 			fill(0);
 		}
 		ellipse(xpos,ypos,radius,radius);
@@ -69,9 +69,10 @@ class ball {
 	
 	void blowUp(){
 		b = 2;
-		radius += .4;
+    if (b != 3){
+		radius += .75;}
 		if (radius >= 110){
-			DEAD();
+			b = 3;
 		}
 	}
 }
@@ -93,16 +94,23 @@ void draw(){
 	for (int x = 0; x < 25; x++){
 		re[x].display();
 		re[x].move();
-		if (re[x].b == 2){
-			re[x].blowUp();
+
+		if (re[x].b != 0 && re[x].b != 1){
+      if (re[x].b == 2) re[x].blowUp();
+      if (re[x].b == 3){
+        re[x].radius -= 2;
+        if (re[x].radius <= 0){
+          re[x].DEAD();
+        }
+      }
 			for (int y = 0; y < 25; y++){
-					if(dist(re[y].xpos,re[y].ypos,re[x].xpos,re[x].ypos) < re[x].radius/1.7 && re[y].b != 1){
+					if(dist(re[y].xpos,re[y].ypos,re[x].xpos,re[x].ypos) < re[x].radius/1.5 && re[y].b != 1 && re[y].b != 3){
 						re[y].xspeed = 0;
 						re[y].yspeed = 0;
 						re[y].blowUp();
 					}
 			}
-		}
+    }
 	}
 }
 
